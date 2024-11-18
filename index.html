@@ -90,6 +90,11 @@
             box-shadow: 0 6px 15px rgba(255, 255, 255, 0.5);
         }
 
+        canvas {
+            margin-top: 30px;
+            max-width: 100%;
+        }
+        
         #menuInicio {
             position: fixed;
             top: 0;
@@ -178,6 +183,8 @@
         <img id="resultadoFoto" src="" alt="Resultado especial">
     </div>
 
+    <canvas id="graficaDinero" width="400" height="200"></canvas>
+    
     <!-- Sonidos -->
     <audio id="diceSound" src="dice-roll.m4a"></audio>
     <audio id="felizSound" src="feliz.mp3"></audio>
@@ -187,6 +194,37 @@
 
     <script>
         let monedas = 50;
+        let historialDinero = [monedas]; // Para almacenar el historial de las monedas
+        let etiquetasTiempo = [0]; // Etiquetas de tiempo para la gráfica
+
+        // Crear la gráfica
+        const ctx = document.getElementById('graficaDinero').getContext('2d');
+        const graficaDinero = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: etiquetasTiempo,
+                datasets: [{
+                    label: 'Dinero',
+                    data: historialDinero,
+                    borderColor: '#ffeb3b',
+                    backgroundColor: 'rgba(255, 235, 59, 0.3)',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#ffeb3b'
+                }]
+            },
+            options: {
+                scales: {
+                    x: { 
+                        type: 'linear', 
+                        position: 'bottom' 
+                    },
+                    y: { 
+                        beginAtZero: true 
+                    }
+                }
+            }
+        });
 
         function cerrarMenu() {
             document.getElementById('menuInicio').style.display = 'none';
@@ -291,8 +329,8 @@
                 resultadoImagen.style.display = "block";
                 tristeSound.play();
             } else {
-                monedas += 5;
-                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 5 monedas.`;
+                monedas += 1;
+                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 1 moneda.`;
                 document.getElementById("resultadoFoto").src = "casi.jpg";
                 resultadoImagen.style.display = "block";
                 casiSound.play();

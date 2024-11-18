@@ -209,7 +209,7 @@
 
                 for (let j = 1; j <= 6; j++) {
                     const cara = document.createElement('div');
-                    cara.className = cara-${j};
+                    cara.className = `cara-${j}`;
                     cara.textContent = j;
                     cubo.appendChild(cara);
                 }
@@ -225,14 +225,14 @@
                 }
 
                 setTimeout(() => {
-                    cubo.style.transform = rotateX(${rotX}deg) rotateY(${rotY}deg);
+                    cubo.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
                 }, 100);
 
                 contenedor.appendChild(cubo);
             }
 
             setTimeout(() => {
-                resultadoTexto.textContent = Total: ${valoresDados.join(" + ")} = ${total};
+                resultadoTexto.textContent = `Total: ${valoresDados.join(" + ")} = ${total}`;
                 evaluarResultado(total);
             }, 1200);
         }
@@ -250,18 +250,18 @@
 
             if (total === 7) {
                 monedas += 10;
-                resultadoTexto.textContent = ¡Ganaste! 🎉 Total: ${total} - Ganas 10 monedas.;
+                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 10 monedas.`;
                 document.getElementById("resultadoFoto").src = "feliz.jpg";
                 resultadoImagen.style.display = "block";
                 felizSound.play();
             } else if (total < 7) {
-                resultadoTexto.textContent = Perdiste 😢 Total: ${total};
+                resultadoTexto.textContent = `Perdiste 😢 Total: ${total}`;
                 document.getElementById("resultadoFoto").src = "triste.jpg";
                 resultadoImagen.style.display = "block";
                 tristeSound.play();
             } else {
                 monedas += 5;
-                resultadoTexto.textContent = ¡Casi! Total: ${total} - Ganas 5 monedas.;
+                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 5 monedas.`;
                 document.getElementById("resultadoFoto").src = "casi.jpg";
                 resultadoImagen.style.display = "block";
                 casiSound.play();

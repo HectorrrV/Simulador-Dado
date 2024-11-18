@@ -31,50 +31,22 @@
         .menu {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
             margin-top: 20px;
         }
 
         button {
-            padding: 15px 30px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             background-color: #ff4081;
             color: white;
-            font-size: 1.2em;
-            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background-color 0.3s;
         }
 
         button:hover {
             transform: scale(1.1);
-            background-color: #e91e63;
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        #economia {
-            margin-top: 30px;
-            font-size: 1.5em;
-            font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: background-color 0.3s;
-        }
-
-        #economia:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .monedas-icono {
-            font-size: 1.8em;
-            color: #ffeb3b;
         }
 
         #dados {
@@ -90,13 +62,10 @@
             font-weight: bold;
         }
 
-        #resultadoImagen {
+        #economia {
             margin-top: 20px;
-            display: none;
-        }
-
-        #resultadoImagen img {
-            width: 200px;
+            font-size: 1.2em;
+            font-weight: bold;
         }
 
         #menuInicio {
@@ -118,6 +87,15 @@
         #menuInicio p {
             font-size: 1.2em;
             margin-bottom: 20px;
+        }
+
+        #resultadoImagen {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #resultadoImagen img {
+            width: 200px;
         }
 
         .cubo {
@@ -167,10 +145,7 @@
 
     <h1>Juego de Dados 3D 🎲</h1>
 
-    <div id="economia">
-        <span class="monedas-icono">💰</span>
-        Monedas: <span id="monedas">50</span>
-    </div>
+    <div id="economia">Monedas: <span id="monedas">50</span></div>
     <div class="menu">
         <button id="jugarBtn" onclick="menuOpcion('jugar')">Jugar</button>
     </div>
@@ -234,7 +209,7 @@
 
                 for (let j = 1; j <= 6; j++) {
                     const cara = document.createElement('div');
-                    cara.className = `cara-${j}`;
+                    cara.className = cara-${j};
                     cara.textContent = j;
                     cubo.appendChild(cara);
                 }
@@ -250,27 +225,48 @@
                 }
 
                 setTimeout(() => {
-                    cubo.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+                    cubo.style.transform = rotateX(${rotX}deg) rotateY(${rotY}deg);
                 }, 100);
 
                 contenedor.appendChild(cubo);
             }
 
             setTimeout(() => {
-                resultadoTexto.textContent = `Resultado: ${valoresDados.join(' + ')} = ${total}`;
-                if (total === 7 || total === -7) {
-                    resultadoImagen.style.display = "block";
-                    document.getElementById("resultadoFoto").src = "imagen-especial.jpg";
-                } else if (total > 7) {
-                    monedas += 10;
-                    actualizarEconomia();
-                    document.getElementById('felizSound').play();
-                } else if (total < 7) {
-                    document.getElementById('tristeSound').play();
-                } else {
-                    document.getElementById('casiSound').play();
-                }
-            }, 1000);
+                resultadoTexto.textContent = Total: ${valoresDados.join(" + ")} = ${total};
+                evaluarResultado(total);
+            }, 1200);
+        }
+
+        function evaluarResultado(total) {
+            const resultadoTexto = document.getElementById('resultado');
+            const resultadoImagen = document.getElementById('resultadoImagen');
+            const felizSound = document.getElementById("felizSound");
+            const tristeSound = document.getElementById("tristeSound");
+            const casiSound = document.getElementById("casiSound");
+
+            // Resetear sonidos
+            felizSound.pause(); tristeSound.pause(); casiSound.pause();
+            felizSound.currentTime = tristeSound.currentTime = casiSound.currentTime = 0;
+
+            if (total === 7) {
+                monedas += 10;
+                resultadoTexto.textContent = ¡Ganaste! 🎉 Total: ${total} - Ganas 10 monedas.;
+                document.getElementById("resultadoFoto").src = "feliz.jpg";
+                resultadoImagen.style.display = "block";
+                felizSound.play();
+            } else if (total < 7) {
+                resultadoTexto.textContent = Perdiste 😢 Total: ${total};
+                document.getElementById("resultadoFoto").src = "triste.jpg";
+                resultadoImagen.style.display = "block";
+                tristeSound.play();
+            } else {
+                monedas += 5;
+                resultadoTexto.textContent = ¡Casi! Total: ${total} - Ganas 5 monedas.;
+                document.getElementById("resultadoFoto").src = "casi.jpg";
+                resultadoImagen.style.display = "block";
+                casiSound.play();
+            }
+            actualizarEconomia();
         }
     </script>
 </body>

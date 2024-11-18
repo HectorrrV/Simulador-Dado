@@ -184,8 +184,7 @@
             <li>¡¡Mucha Suerte!!</li>
         </ul>
         <!-- Botón para iniciar la música de fondo -->
-<button id="playMusicBtn">Reproducir Música de Fondo</button>
-
+        
         <button onclick="cerrarMenu()">¡Comenzar!</button>
     </div>
 
@@ -259,10 +258,10 @@
             document.getElementById('menuInicio').style.display = 'none';
         }
         
-        document.getElementById('playMusicBtn').addEventListener('click', function() {
+        // Iniciar la música de fondo cuando se cargue la página
+window.addEventListener('click', function() {
     const musicaFondo = document.getElementById('musicaFondo');
     musicaFondo.play();
-    document.getElementById('playMusicBtn').style.display = 'none'; // Oculta el botón después de hacer clic
 });
 
 

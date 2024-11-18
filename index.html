@@ -30,6 +30,7 @@
 
         .menu {
             display: flex;
+            flex-direction: column;
             gap: 20px;
             margin-top: 20px;
         }
@@ -59,6 +60,42 @@
             margin-top: 20px;
             font-size: 1.5em;
             font-weight: bold;
+        }
+
+        #economia {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        #menuInicio {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        #menuInicio p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        #resultadoImagen {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #resultadoImagen img {
+            width: 200px;
         }
 
         .cubo {
@@ -94,53 +131,70 @@
     </style>
 </head>
 <body>
-    <h1>Juego de Dados 3D 🎲</h1>
-
-    <!-- Div donde aparecerá la imagen de resultado -->
-    <div id="resultadoImagen" style="display: none;">
-        <img id="resultadoFoto" src="tu-imagen.png" alt="Resultado especial" style="width: 200px;">
+    <!-- Menú Inicial -->
+    <div id="menuInicio">
+        <h1>Bienvenido al Juego de Dados 3D 🎲</h1>
+        <p>Reglas del Juego:</p>
+        <ul>
+            <li>Comienzas con 50 monedas.</li>
+            <li>Cada lanzamiento cuesta 5 monedas.</li>
+            <li>Obtén monedas adicionales si ganas o superas un total específico.</li>
+        </ul>
+        <button onclick="cerrarMenu()">¡Comenzar!</button>
     </div>
 
+    <h1>Juego de Dados 3D 🎲</h1>
+
+    <div id="economia">Monedas: <span id="monedas">50</span></div>
     <div class="menu">
         <button id="jugarBtn" onclick="menuOpcion('jugar')">Jugar</button>
-        <button id="lanzarBtn" onclick="menuOpcion('lanzar')">Lanzar 2 Dados</button>
     </div>
 
     <div id="dados"></div>
     <div id="resultado"></div>
+    <div id="resultadoImagen">
+        <img id="resultadoFoto" src="" alt="Resultado especial">
+    </div>
 
-    <!-- Sonidos para cada tipo de resultado -->
+    <!-- Sonidos -->
     <audio id="diceSound" src="dice-roll.m4a"></audio>
     <audio id="felizSound" src="feliz.mp3"></audio>
     <audio id="tristeSound" src="triste.mp3"></audio>
     <audio id="casiSound" src="casi.mp3"></audio>
+    <audio id="musicaFondo" src="musica-fondo.mp3" loop autoplay></audio>
 
     <script>
+        let monedas = 50;
+
+        function cerrarMenu() {
+            document.getElementById('menuInicio').style.display = 'none';
+        }
+
         function menuOpcion(opcion) {
             const resultadoTexto = document.getElementById('resultado');
             resultadoTexto.textContent = ''; // Limpiar resultado anterior
-
-            const jugarBtn = document.getElementById('jugarBtn');
-            const lanzarBtn = document.getElementById('lanzarBtn');
-            // Cambia colores de botones
-            jugarBtn.style.backgroundColor = opcion === 'jugar' ? '#4CAF50' : '#ff4081';
-            lanzarBtn.style.backgroundColor = opcion === 'lanzar' ? '#4CAF50' : '#ff4081';
-
-            if (opcion === 'jugar') {
-                document.getElementById("diceSound").play(); // Reproduce el sonido
-                resultadoTexto.textContent = "¡Estás jugando! Lanza los dados para intentar ganar.";
-                tirarDados(true);
-            } else if (opcion === 'lanzar') {
-                resultadoTexto.textContent = "Lanzaste los dados sin propósito, como en un juego de mesa.";
-                tirarDados(false);
+            if (monedas < 5) {
+                resultadoTexto.textContent = "No tienes suficientes monedas para jugar.";
+                return;
             }
+
+            monedas -= 5;
+            actualizarEconomia();
+            document.getElementById("diceSound").play(); // Reproduce el sonido
+            tirarDados();
         }
 
-        function tirarDados(conJuego) {
+        function actualizarEconomia() {
+            document.getElementById('monedas').textContent = monedas;
+        }
+
+        function tirarDados() {
             const numDados = 2;
             const contenedor = document.getElementById('dados');
             const resultadoTexto = document.getElementById('resultado');
+            const resultadoImagen = document.getElementById('resultadoImagen');
             contenedor.innerHTML = ''; // Limpiar dados anteriores
+            resultadoImagen.style.display = "none";
 
             let total = 0;
             let valoresDados = [];
@@ -179,10 +233,7 @@
 
             setTimeout(() => {
                 resultadoTexto.textContent = `Total: ${valoresDados.join(" + ")} = ${total}`;
-
-                if (conJuego) {
-                    evaluarResultado(total);
-                }
+                evaluarResultado(total);
             }, 1200);
         }
 
@@ -193,27 +244,29 @@
             const tristeSound = document.getElementById("tristeSound");
             const casiSound = document.getElementById("casiSound");
 
-            // Resetear imagen y sonidos
-            resultadoImagen.style.display = "none";
+            // Resetear sonidos
             felizSound.pause(); tristeSound.pause(); casiSound.pause();
             felizSound.currentTime = tristeSound.currentTime = casiSound.currentTime = 0;
 
             if (total === 7) {
-                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total}`;
-                resultadoImagen.style.display = "block";
+                monedas += 10;
+                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 10 monedas.`;
                 document.getElementById("resultadoFoto").src = "feliz.jpg";
+                resultadoImagen.style.display = "block";
                 felizSound.play();
             } else if (total < 7) {
                 resultadoTexto.textContent = `Perdiste 😢 Total: ${total}`;
-                resultadoImagen.style.display = "block";
                 document.getElementById("resultadoFoto").src = "triste.jpg";
-                tristeSound.play();
-            } else if (total > 7) {
-                resultadoTexto.textContent = `Superaste 7, tienes un intento más. ¡Lanza de nuevo!`;
                 resultadoImagen.style.display = "block";
+                tristeSound.play();
+            } else {
+                monedas += 5;
+                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 5 monedas.`;
                 document.getElementById("resultadoFoto").src = "casi.jpg";
+                resultadoImagen.style.display = "block";
                 casiSound.play();
             }
+            actualizarEconomia();
         }
     </script>
 </body>

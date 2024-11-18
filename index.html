@@ -36,17 +36,21 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 8px;
-            background-color: #ff4081;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #ff4081, #ff80ab);
             color: white;
+            font-size: 1.5em;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 64, 129, 0.5);
         }
 
         button:hover {
-            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 64, 129, 0.7);
+            background: linear-gradient(45deg, #ff80ab, #ff4081);
         }
 
         #dados {
@@ -66,6 +70,24 @@
             margin-top: 20px;
             font-size: 1.2em;
             font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #economia span {
+            font-size: 1.5em;
+            color: #ffeb3b;
+            text-shadow: 0 0 5px rgba(255, 235, 59, 0.8), 0 0 10px rgba(255, 235, 59, 0.6);
+        }
+
+        #economia.change {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 255, 255, 0.5);
         }
 
         #menuInicio {

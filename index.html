@@ -98,7 +98,7 @@
 
     <!-- Div donde aparecerá la imagen de resultado -->
     <div id="resultadoImagen" style="display: none;">
-        <img id="resultadoFoto" src="static/tu-imagen.png" alt="Resultado especial" style="width: 200px;">
+        <img id="resultadoFoto" src="tu-imagen.png" alt="Resultado especial" style="width: 200px;">
     </div>
 
     <div class="menu">
@@ -110,10 +110,10 @@
     <div id="resultado"></div>
 
     <!-- Sonidos para cada tipo de resultado -->
-    <audio id="diceSound" src="static/dice-roll.m4a"></audio>
-    <audio id="felizSound" src="static/feliz.mp3"></audio>
-    <audio id="tristeSound" src="static/triste.mp3"></audio>
-    <audio id="casiSound" src="static/casi.mp3"></audio>
+    <audio id="diceSound" src="dice-roll.m4a"></audio>
+    <audio id="felizSound" src="feliz.mp3"></audio>
+    <audio id="tristeSound" src="triste.mp3"></audio>
+    <audio id="casiSound" src="casi.mp3"></audio>
 
     <script>
         function menuOpcion(opcion) {
@@ -201,17 +201,17 @@
             if (total === 7) {
                 resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total}`;
                 resultadoImagen.style.display = "block";
-                document.getElementById("resultadoFoto").src = "static/feliz.jpg";
+                document.getElementById("resultadoFoto").src = "feliz.jpg";
                 felizSound.play();
             } else if (total < 7) {
                 resultadoTexto.textContent = `Perdiste 😢 Total: ${total}`;
                 resultadoImagen.style.display = "block";
-                document.getElementById("resultadoFoto").src = "static/triste.jpg";
+                document.getElementById("resultadoFoto").src = "triste.jpg";
                 tristeSound.play();
             } else if (total > 7) {
                 resultadoTexto.textContent = `Superaste 7, tienes un intento más. ¡Lanza de nuevo!`;
                 resultadoImagen.style.display = "block";
-                document.getElementById("resultadoFoto").src = "static/casi.jpg";
+                document.getElementById("resultadoFoto").src = "casi.jpg";
                 casiSound.play();
             }
         }

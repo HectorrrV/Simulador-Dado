@@ -178,9 +178,9 @@
         <ul>
             <li>Comienzas con 50 pesos.</li>
             <li>Cada lanzamiento cuesta 5 pesos.</li>
-            <li>Si sacas mas de 7 al lanzar los dados se te regresan 2.5 pesos.</li>
-            <li>Si sacas exactamente 7 al lanzar los dados ganaras 25 pesos. </li>
-            <li>Pero si sacas menos de 7 a lanzar los dados perderas los 5 pesos.</li>
+            <li>Si sacas mas de 7 al lanzar los dados se te regresan 2.5 creditos.</li>
+            <li>Si sacas exactamente 7 al lanzar los dados ganaras 25 creditos. </li>
+            <li>Pero si sacas menos de 7 a lanzar los dados perderas los 5 creditos.</li>
             <li>¡¡Mucha Suerte!!</li>
         </ul>
         <button onclick="cerrarMenu()">¡Comenzar!</button>
@@ -188,7 +188,7 @@
 
     <h1>Juego de Dados 3D 🎲</h1>
 
-    <div id="economia">Dinero: <span id="monedas">$50</span></div>
+    <div id="economia">Credito: <span id="monedas">50</span></div>
     <div class="menu">
         <button id="jugarBtn" onclick="menuOpcion('jugar')">¡Lanzar los Dados!</button>
     </div>
@@ -260,7 +260,7 @@
             const resultadoTexto = document.getElementById('resultado');
             resultadoTexto.textContent = ''; // Limpiar resultado anterior
             if (monedas < 5) {
-                resultadoTexto.textContent = "No tienes suficientes dinero para jugar. Suerte a la proxima.";
+                resultadoTexto.textContent = "No tienes suficientes creditos para jugar. Suerte a la proxima.";
                 return;
             }
 
@@ -274,7 +274,7 @@
             const economia = document.getElementById('economia');
             const monedasElemento = document.getElementById('monedas');
 
-            monedasElemento.textContent = '$' + monedas;
+            monedasElemento.textContent = monedas;
 
             // Actualizar gráfica
             etiquetasTiempo.push(etiquetasTiempo[etiquetasTiempo.length - 1] + 1);
@@ -350,7 +350,7 @@
 
             if (total === 7) {
                 monedas += 25;
-                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 25 pesos.`;
+                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 25 creditos.`;
                 document.getElementById("resultadoFoto").src = "feliz.jpg";
                 resultadoImagen.style.display = "block";
                 felizSound.play();
@@ -361,7 +361,7 @@
                 tristeSound.play();
             } else {
                 monedas += 2.5;
-                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 2.5 pesos.`;
+                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 2.5 creditos.`;
                 document.getElementById("resultadoFoto").src = "casi.jpg";
                 resultadoImagen.style.display = "block";
                 casiSound.play();

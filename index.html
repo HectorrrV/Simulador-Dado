@@ -167,9 +167,9 @@
 
     <h1>Juego de Dados 3D 🎲</h1>
 
-    <div id="economia">Monedas: <span id="monedas">50</span></div>
+    <div id="economia">Dinero: <span id="monedas">$50</span></div>
     <div class="menu">
-        <button id="jugarBtn" onclick="menuOpcion('jugar')">Jugar</button>
+        <button id="jugarBtn" onclick="menuOpcion('jugar')">¡Lanzar los Dados!</button>
     </div>
 
     <div id="dados"></div>
@@ -196,7 +196,7 @@
             const resultadoTexto = document.getElementById('resultado');
             resultadoTexto.textContent = ''; // Limpiar resultado anterior
             if (monedas < 5) {
-                resultadoTexto.textContent = "No tienes suficientes monedas para jugar.";
+                resultadoTexto.textContent = "No tienes suficientes dinero para jugar.";
                 return;
             }
 
@@ -207,7 +207,16 @@
         }
 
         function actualizarEconomia() {
-            document.getElementById('monedas').textContent = monedas;
+            const economia = document.getElementById('economia');
+            const monedasElemento = document.getElementById('monedas');
+
+            monedasElemento.textContent = '$' + monedas;
+
+            // Añadir animación de cambio
+            economia.classList.add('change');
+            setTimeout(() => {
+                economia.classList.remove('change');
+            }, 300);
         }
 
         function tirarDados() {
@@ -271,8 +280,8 @@
             felizSound.currentTime = tristeSound.currentTime = casiSound.currentTime = 0;
 
             if (total === 7) {
-                monedas += 10;
-                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 10 monedas.`;
+                monedas += 25;
+                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 25 monedas.`;
                 document.getElementById("resultadoFoto").src = "feliz.jpg";
                 resultadoImagen.style.display = "block";
                 felizSound.play();

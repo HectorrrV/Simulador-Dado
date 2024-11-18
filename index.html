@@ -29,6 +29,14 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        #graficaContenedor {
+            position: absolute; /* Hace que la gráfica se mueva independientemente del flujo principal */
+            right: 20px; /* Alinea la gráfica al borde derecho */
+            top: 50%; /* Centra la gráfica verticalmente */
+            transform: translateY(-50%); /* Ajusta el centrado exacto */
+        
+        }
+
         .menu {
             display: flex;
             flex-direction: column;
@@ -92,9 +100,13 @@
         }
 
         canvas {
-            margin-top: 30px;
-            max-width: 100%;
-        }
+    width: 90%; /* Se ajusta al 90% del ancho de la pantalla */
+    max-width: 500px; /* Máximo ancho de 500px */
+    height: 300px; /* Ajusta la altura a 150px */
+    margin-top: 30px;
+}
+
+
         
         #menuInicio {
             position: fixed;
@@ -164,9 +176,12 @@
         <h1>Bienvenido al Juego de Dados 3D 🎲</h1>
         <p>Reglas del Juego:</p>
         <ul>
-            <li>Comienzas con 50 monedas.</li>
-            <li>Cada lanzamiento cuesta 5 monedas.</li>
-            <li>Obtén monedas adicionales si ganas o superas un total específico.</li>
+            <li>Comienzas con 50 pesos.</li>
+            <li>Cada lanzamiento cuesta 5 pesos.</li>
+            <li>Si sacas mas de 7 al lanzar los dados se te regresan 2.5 pesos.</li>
+            <li>Si sacas exactamente 7 al lanzar los dados ganaras 25 pesos. </li>
+            <li>Pero si sacas menos de 7 a lanzar los dados perderas los 5 pesos.</li>
+            <li>¡¡Mucha Suerte!!</li>
         </ul>
         <button onclick="cerrarMenu()">¡Comenzar!</button>
     </div>
@@ -177,14 +192,18 @@
     <div class="menu">
         <button id="jugarBtn" onclick="menuOpcion('jugar')">¡Lanzar los Dados!</button>
     </div>
-
+    
+    <div id="graficaContenedor">
+        <canvas id="graficaDinero" width="500" height="300"></canvas>
+    </div>
+    
     <div id="dados"></div>
     <div id="resultado"></div>
     <div id="resultadoImagen">
         <img id="resultadoFoto" src="" alt="Resultado especial">
     </div>
 
-    <canvas id="graficaDinero" width="400" height="200"></canvas>
+    <canvas id="graficaDinero"></canvas>
     
     <!-- Sonidos -->
     <audio id="diceSound" src="dice-roll.m4a"></audio>
@@ -199,33 +218,39 @@
         let etiquetasTiempo = [0]; // Etiquetas de tiempo para la gráfica
 
         // Crear la gráfica
-        const ctx = document.getElementById('graficaDinero').getContext('2d');
-        const graficaDinero = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: etiquetasTiempo,
-                datasets: [{
-                    label: 'Dinero',
-                    data: historialDinero,
-                    borderColor: '#ffeb3b',
-                    backgroundColor: 'rgba(255, 235, 59, 0.3)',
-                    borderWidth: 2,
-                    pointRadius: 3,
-                    pointBackgroundColor: '#ffeb3b'
-                }]
-            },
-            options: {
-                scales: {
-                    x: { 
-                        type: 'linear', 
-                        position: 'bottom' 
-                    },
-                    y: { 
-                        beginAtZero: true 
-                    }
+    const ctx = document.getElementById('graficaDinero').getContext('2d');
+    const graficaDinero = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: etiquetasTiempo,
+            datasets: [{
+                label: 'Dinero',
+                data: historialDinero,
+                borderColor: '#ffeb3b',
+                backgroundColor: 'rgba(255, 235, 59, 0.3)',
+                borderWidth: 2,
+                pointRadius: 3,
+                pointBackgroundColor: '#ffeb3b'
+            }]
+        },
+        options: {
+            responsive: true, // Hace que la gráfica sea responsive
+            scales: {
+                x: { 
+                    type: 'linear', 
+                    position: 'bottom', 
+                },
+                y: { 
+                    beginAtZero: true,
                 }
             }
-        });
+        }
+    });
+
+    // Redibujar la gráfica cuando la ventana cambia de tamaño
+    window.addEventListener('resize', function() {
+        graficaDinero.resize();
+    });
 
         function cerrarMenu() {
             document.getElementById('menuInicio').style.display = 'none';
@@ -235,7 +260,7 @@
             const resultadoTexto = document.getElementById('resultado');
             resultadoTexto.textContent = ''; // Limpiar resultado anterior
             if (monedas < 5) {
-                resultadoTexto.textContent = "No tienes suficientes dinero para jugar.";
+                resultadoTexto.textContent = "No tienes suficientes dinero para jugar. Suerte a la proxima.";
                 return;
             }
 
@@ -250,6 +275,11 @@
             const monedasElemento = document.getElementById('monedas');
 
             monedasElemento.textContent = '$' + monedas;
+
+            // Actualizar gráfica
+            etiquetasTiempo.push(etiquetasTiempo[etiquetasTiempo.length - 1] + 1);
+            historialDinero.push(monedas);
+            graficaDinero.update();
 
             // Añadir animación de cambio
             economia.classList.add('change');
@@ -320,7 +350,7 @@
 
             if (total === 7) {
                 monedas += 25;
-                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 25 monedas.`;
+                resultadoTexto.textContent = `¡Ganaste! 🎉 Total: ${total} - Ganas 25 pesos.`;
                 document.getElementById("resultadoFoto").src = "feliz.jpg";
                 resultadoImagen.style.display = "block";
                 felizSound.play();
@@ -330,8 +360,8 @@
                 resultadoImagen.style.display = "block";
                 tristeSound.play();
             } else {
-                monedas += 1;
-                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 1 moneda.`;
+                monedas += 2.5;
+                resultadoTexto.textContent = `¡Casi! Total: ${total} - Ganas 2.5 pesos.`;
                 document.getElementById("resultadoFoto").src = "casi.jpg";
                 resultadoImagen.style.display = "block";
                 casiSound.play();

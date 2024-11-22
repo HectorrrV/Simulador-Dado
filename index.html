@@ -88,6 +88,87 @@
             transition: all 0.3s ease-in-out;
         }
 
+        /* Estilo para el botón de Créditos */
+#creditosBtn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #4caf50, #81c784);
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5);
+}
+
+#creditosBtn:hover {
+    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.7);
+    background: linear-gradient(45deg, #81c784, #4caf50);
+}
+
+/* Estilo para el Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+/* Contenido del Modal */
+.modal-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 500px;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #ffeb3b;
+}
+
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.modal-content ul li {
+    margin: 5px 0;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #ffeb3b;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close:hover {
+    color: #ff4081;
+}
+
+/* Estilo para el logo */
+.logo-escuela {
+    max-width: 150px;
+    margin: 20px 0;
+}
+        
         #economia span {
             font-size: 1.5em;
             color: #ffeb3b;
@@ -105,8 +186,6 @@
     height: 300px; /* Ajusta la altura a 150px */
     margin-top: 30px;
 }
-
-
         
         #menuInicio {
             position: fixed;
@@ -188,6 +267,27 @@
         <button onclick="cerrarMenu()">¡Comenzar!</button>
     </div>
 
+    <!-- Botón de Créditos -->
+<div class="menu">
+    <button id="creditosBtn" onclick="mostrarCreditos()">Créditos</button>
+</div>
+
+<!-- Modal para Créditos -->
+<div id="creditosModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarCreditos()">&times;</span>
+        <img src="logotec.jpg" alt="Logo de la escuela" class="logo-escuela">
+        <h2>Créditos</h2>
+        <p><strong>Desarrollado por:</strong></p>
+        <ul>
+            <li>Hector Villarreal</li>
+            <li>Carlos De La Garza</li>
+            <li>Alan Bermudez</li>
+            <li>ChatGPT (Inteligencia Artificial)</li>
+        </ul>
+    </div>
+</div>
+    
     <h1>Juego de Dados 3D 🎲</h1>
 
     <div id="economia">Creditos: <span id="monedas">50</span></div>
@@ -297,6 +397,17 @@ window.addEventListener('click', function() {
             }, 300);
         }
 
+function mostrarCreditos() {
+    const modal = document.getElementById('creditosModal');
+    modal.style.display = 'flex'; // Mostrar el modal
+}
+
+function cerrarCreditos() {
+    const modal = document.getElementById('creditosModal');
+    modal.style.display = 'none'; // Ocultar el modal
+}
+
+        
         function tirarDados() {
             const numDados = 2;
             const contenedor = document.getElementById('dados');

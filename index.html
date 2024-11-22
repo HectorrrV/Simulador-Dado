@@ -90,6 +90,9 @@
 
         /* Estilo para el botón de Créditos */
 #creditosBtn {
+    position: fixed; /* Fija el botón en una posición específica */
+    bottom: 20px; /* Separación desde el borde inferior */
+    left: 20px; /* Separación desde el borde izquierdo */
     padding: 15px 30px;
     border: none;
     border-radius: 15px;
@@ -100,6 +103,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5);
+    z-index: 1000; /* Asegura que esté encima de otros elementos */
 }
 
 #creditosBtn:hover {
